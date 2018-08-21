@@ -44,7 +44,6 @@
 
 <script>
   const { ipcRenderer, shell } = require('electron')
-  // const { ipcRenderer, shell } = eval('require("electron")')
   const isWin = navigator.userAgent.indexOf('Win') !== -1
   export default {
     name: 'Landing',
@@ -150,6 +149,10 @@
         })
       },
       enter () {
+        if (this.ctId === 0) {
+          this.$message.error(this.$t('mxpcweb.login.1528784469407'))
+          return ''
+        }
         let { encrypt } = this.Global.utils
         let { getStore } = this.Global.utils
         var href = `${this.Global.config.domain}/client/clientEnter.html?auth=${encrypt(JSON.stringify(this.auth))}&ctId=${this.ctId}&language=${getStore('language')}`
