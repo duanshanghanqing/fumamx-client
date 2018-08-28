@@ -40,6 +40,16 @@
       ipcRenderer.on('message', function(event, text) {
         console.log(text)
       })
+      // 刷新
+      ipcRenderer.on('reload', function(event, text) {
+        window.location.reload()
+      })
+
+      document.body.addEventListener('mouseup', function (event) {
+        if (event.button === 2) {
+          ipcRenderer.send('sigShowRightClickMenu')
+        }
+      },false)
     </script>
   </body>
 </html>

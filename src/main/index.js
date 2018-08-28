@@ -1,5 +1,5 @@
 'use strict'
-import { app, BrowserWindow, ipcMain, dialog, globalShortcut } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, globalShortcut, Menu, MenuItem } from 'electron'
 
 /**
  * Auto Updater
@@ -164,6 +164,21 @@ ipcMain.on('window-mainsys', function (event, option, href) {
   }
 })
 
+// 鼠标右键菜单
+ipcMain.on('sigShowRightClickMenu', (event) => {
+  const menu = new Menu()
+  menu.append(new MenuItem({ label: '刷新',
+    click: function () {
+      Win.webContents.send('reload')
+    }}))
+  menu.append(new MenuItem({ label: '检查',
+    click: function () {
+      Win.webContents.openDevTools()
+    }}))
+  const win = BrowserWindow.fromWebContents(event.sender)
+  menu.popup(win)
+})
+
 /**
  * Auto Updater
  *
@@ -190,7 +205,7 @@ app.on('ready', () => {
 
 function sendStatusToWindow (text) {
   log.info(text)
-  loginWindow.webContents.send('message', text)
+  Win.webContents.send('message', text)
 }
 autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('开始检查更新的时候触发。')
