@@ -31,7 +31,7 @@
     <div class="companySelect" v-if="companySelect">
       <p class="title">{{ $t('mxpcweb.login.1528784469407') }}</p>
       <div class="companyList MXscroll">
-        <el-radio-group v-model="ctId">
+        <el-radio-group v-model="ctId" @change="companyChange()">
           <div v-for="(item,index) in companyList" :key="index" v-if="item.status === 1">
             <el-radio :label="item.ctId" class="item">{{ item.corpName.length > 16 ? item.corpName.substr(0,16) + '...' : item.corpName }}</el-radio>
           </div>
@@ -89,6 +89,10 @@
         this.rememberPassword = true
       }
       this.languageChange()
+      let ctId = getStore('ctId')
+      if (ctId) {
+        this.ctId = ctId
+      }
     },
     mounted () {
       let { setStore } = this.Global.utils
@@ -169,6 +173,10 @@
       isRememberPassword () {
         let { setStore } = this.Global.utils
         setStore('isRememberPassword', this.rememberPassword)
+      },
+      companyChange () {
+        let { setStore } = this.Global.utils
+        setStore('ctId', this.ctId)
       }
     }
   }
